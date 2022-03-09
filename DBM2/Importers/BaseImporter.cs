@@ -25,7 +25,7 @@ namespace DBM2.Importers
             }
         }
         // строка ND
-        public string NDItem
+        public static string NDItem
         {
             get
             {

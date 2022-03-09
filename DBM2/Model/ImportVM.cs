@@ -32,6 +32,7 @@ namespace DBM2
         }
         private static ImportVM _inst;
         #endregion
+
         #region ForBinding
         public string Caption
         {
@@ -426,24 +427,7 @@ namespace DBM2
         #endregion
 
         #region Функции
-        //// Человечные аттрибуты
-        //public string GetAttsDescr(string a)
-        //{
-        //    if (a != null | a != "")
-        //    {
-        //        string d = EF_TKP.EFConn.AttDescrD[a];
-        //        if (d != null | d != "")
-        //        {
-        //            return d;
-        //        }
-        //        return a;
-
-        //    }
-        //    else
-        //    {
-        //        return a;
-        //    }
-        //}
+      
         // ФайлПикер)
         public void filePicker()
         {
@@ -468,7 +452,7 @@ namespace DBM2
                 fl.InitialDirectory = Environment.SpecialFolder.Desktop.ToString();
 
             }
-            //  fl.ShowDialog();
+     
 
             if (fl.ShowDialog() == true)
             {
@@ -546,35 +530,36 @@ namespace DBM2
         }
 
         //
-        public void GenerateBasicAttLst()
-        {
-            List<string> lst = new();
-            if (CurrentImporter != null)
-            {
-                //  lst.Add("");
-                BasicAttLst.Clear();
+        //public void GenerateBasicAttLst()
+        //{
+        //    List<string> lst = new();
+        //    if (CurrentImporter != null)
+        //    {
+        //        //  lst.Add("");
+        //        BasicAttLst.Clear();
 
-                foreach (string i in CurrentImporter.dAttMapping.Keys.ToList())
-                {
-                    BasicAttLst.Add(GetAttsDescr(i));
+        //        foreach (string i in CurrentImporter.dAttMapping.Keys.ToList())
+        //        {
+        //            BasicAttLst.Add(GetAttsDescr(i));
 
-                }
-                foreach (string i in CurrentImporter.lReqAtt)
-                {
-                    ReqAttLst.Add(GetAttsDescr(i));
-                }
+        //        }
+        //        foreach (string i in CurrentImporter.lReqAtt)
+        //        {
+        //            ReqAttLst.Add(GetAttsDescr(i));
+        //        }
                                
-                BasicAttLst.Add(NDItem);
-                BasicAttLst.Sort();
-            }
+        //        BasicAttLst.Add(NDItem);
+        //        BasicAttLst.Sort();
+        //    }
            
-        }
+        //}
 
         public string NDItem
         {
             get
             {
-                return "...";
+
+                return BaseImporter.NDItem;
             }
         }
 
