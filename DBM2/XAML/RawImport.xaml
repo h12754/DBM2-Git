@@ -1,0 +1,242 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:PCtrl="clr-namespace:LightPropertyViewer;assembly=LightPropertyViewer"
+        xmlns:local="clr-namespace:DBM2"
+    x:Class="DBM2.RawImport"
+        mc:Ignorable="d"
+        x:Name="RawImportWindow"
+        Title="{Binding Caption}" Height="550" Width="1200"  >
+    <Window.Resources>
+        <local:RowNumberConverter
+         x:Key="ColNameConverter" />
+        <local:RowNumberConverter
+         x:Key="rowNumberConverter" />
+        <local:RowNumberToColor
+         x:Key="RowNumberToColor" />
+        <local:ColumnWidthConverter
+            x:Key="ColumnWidthConverter" />
+        <local:CBItemEnabledConverter
+            x:Key="CBItemEnabledConverter" />
+        <local:CBItemColorConverter
+            x:Key="CBItemColorConverter" />
+        
+    </Window.Resources>
+    <Grid>
+
+        <Grid  >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+
+            <DataGrid x:Name="ImportDG" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1"  Width="auto"  RowHeaderWidth="0"  CanUserSortColumns="False"   AutoGenerateColumns="True" CanUserReorderColumns="false" CanUserAddRows="False"  CanUserDeleteRows="False" CanUserResizeColumns="True"  ItemsSource="{Binding ImportSourceAsDW,  UpdateSourceTrigger=PropertyChanged}">
+
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <!--<Label Content="N"/>-->
+                                        <!--<TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center"/>-->
+                                        <TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center"/>
+                                        <ComboBox MinWidth="30" Margin="5,0,0,0" Style="{StaticResource StCbBox}" MaxDropDownHeight="Auto"   IsEditable="True" IsReadOnly="True" IsEnabled="{Binding DataContext.AttCBEnabled, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Mode=OneWay}" Text="{Binding DataContext.NDItem, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Mode=OneWay}" ItemsSource="{Binding DataContext.BasicAttLst, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="SelectionChanged">
+                                                    <i:InvokeCommandAction Command="{Binding DataContext.SetColName,  RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type  ComboBox}}}" />
+                                                </i:EventTrigger>
+                                               
+                                            </i:Interaction.Triggers>
+                                            <ComboBox.ItemContainerStyle>
+                                                <Style TargetType="{x:Type ComboBoxItem}">
+                                                      <Setter Property="IsEnabled">
+                                                        <Setter.Value>
+                                                            <MultiBinding  Converter="{StaticResource CBItemEnabledConverter}">
+                                                            <Binding />
+                                                            </MultiBinding>
+                                                          </Setter.Value>
+                                                    </Setter>
+                                                    <Setter Property="Background">
+                                                        <Setter.Value>
+                                                            <MultiBinding  Converter="{StaticResource CBItemColorConverter}">
+                                                                <Binding />
+                                                            </MultiBinding>
+                                                        </Setter.Value>
+                                                    </Setter>
+
+                                                </Style>
+                                            </ComboBox.ItemContainerStyle>
+                                        </ComboBox> 
+                                   
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Background" Value ="WhiteSmoke" />
+                        <Setter Property="BorderBrush" Value ="Black" />
+                        <Setter Property="BorderThickness" Value ="1" />
+                        <Setter Property="Margin" Value ="-1,0,0,0" />
+                        
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Num" IsReadOnly="True" MinWidth="40"  >
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" >
+                                    <Label Content="Num" />
+                                    <!--<TextBlock Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridColumnHeader}, Path=Name}" />-->
+
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}">
+                              
+                                <Setter Property="Background" Value ="WhiteSmoke" />
+                                <Setter Property="BorderBrush" Value ="Black" />
+                                <Setter Property="BorderThickness" Value ="1" />
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>  
+                        <DataGridTextColumn.Binding>
+                            <MultiBinding  Converter="{StaticResource rowNumberConverter}">
+                                <Binding />
+                                <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}" />
+                            </MultiBinding>
+                        </DataGridTextColumn.Binding>
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Background" Value="LightGray" />
+                                <Setter Property="BorderBrush" Value="LightGray" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                       
+                    </DataGridTextColumn>
+                    
+                </DataGrid.Columns>
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Setter Property="Background" >
+                            <Setter.Value>
+                                <MultiBinding Converter="{StaticResource RowNumberToColor}" >
+                                    <Binding  />
+                                    <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}" />
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.RowStyle>
+                <!--<i:Interaction.Triggers>
+                    <i:EventTrigger EventName="s">
+                        <i:InvokeCommandAction Command="{Binding Reorder}" />
+                    </i:EventTrigger>
+                    --><!--<i:EventTrigger EventName="ColumnReordered">
+                        <i:InvokeCommandAction Command="{Binding Reorder}" />
+                    </i:EventTrigger>--><!--
+                </i:Interaction.Triggers>-->
+            </DataGrid>
+             
+            <UserControl  Content="{Binding DialogContent}" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+            
+            
+            <!--<local:WaitCtrl Grid.Row="1" Grid.RowSpan="2" Grid.Column="1"  />-->
+            <Grid x:Name="BaseGrd"  Grid.Row="0"  Grid.RowSpan="2" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Row="0" MinWidth="300"  Grid.Column="0"  >
+                    <Grid  x:Name="FileOpenGrd" Margin="4" Grid.Row="0" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="{Binding Width, ElementName=ValCol}" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock  Grid.Row="0" Grid.Column="0" Text="Файл импорта" VerticalAlignment="Center"/>
+                        <Button  Style="{StaticResource StBtn}" x:Name="btnOpenFile" Margin="4" Grid.Row="0" Grid.Column="1"  Content="Выбрать" Command="{Binding Open_xlsx}" />
+                        <TextBox   x:Name="tbFilePath"   Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="2" Background="White" BorderBrush="Black" Text="{Binding FilePath, Mode=TwoWay}"  Style="{StaticResource StTbBox}">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Return" Command="{Binding Open_xlsx_byPath}"/>
+                            </TextBox.InputBindings>
+                        </TextBox> 
+                        <TextBlock  Grid.Row="2" Grid.Column="0" Text="Лист документа" VerticalAlignment="Center"/>
+                        <ComboBox  Style="{StaticResource StCbBox}"   x:Name="cbtExlList" SelectedValue="{Binding SelectedListName}" Grid.Row="2"  Grid.Column="1" Background="White"  ItemsSource="{Binding ExlListNames}" />
+                        <TextBlock  Grid.Row="3" Grid.Column="0" Text="Первая строка" VerticalAlignment="Center" />
+                        <TextBox   Name="tbNumRow"   Grid.Row="3"  Grid.Column="1" Grid.ColumnSpan="1" Background="White" BorderBrush="Black" Text="{Binding SkipRows, UpdateSourceTrigger=PropertyChanged}"  Style="{StaticResource StTbBox}">
+                            <!--<TextBox.InputBindings>
+                                <KeyBinding Key="Return" Command="{Binding Open_xlsx_byPath}"/>
+                            </TextBox.InputBindings>-->
+                        </TextBox>
+                        <TextBlock Margin="4" Grid.Row="4" Grid.Column="0" Text="Вендор" VerticalAlignment="Center"/>
+                        <ComboBox  Margin="4,4,4,4" x:Name="cbVendor" Grid.Row="4"  Grid.Column="1"  Style="{StaticResource StCbBox}"  IsTextSearchEnabled="True" IsEditable="True" ItemsSource="{Binding vendorNames}"  />
+                        <TextBlock Margin="4" Grid.Row="5" Grid.Column="0" Text="Импортер" VerticalAlignment="Center"/>
+                        <ComboBox  Margin="4" x:Name="cbImporter" Grid.Row="5"  Grid.Column="1" Style="{StaticResource StCbBox}" ItemsSource="{Binding importersNames}" SelectedValue="{Binding CurrImporterName}"  />
+
+                        <Button  Style="{StaticResource StBtn}" x:Name="btnImport" IsEnabled="{Binding ImportBtnEnabled, Mode=OneWay}" Margin="4" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"   Command="{Binding Open_xlsx}">
+                          
+                        <StackPanel Grid.Row="6"   Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                             
+                            <Image Height="32" Width="32" Margin="2" Source="{Binding Msg_img}" />
+                            <TextBlock Margin="4"    Text="{Binding Msg_txt}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+                        </StackPanel>
+  
+                        </Button> 
+                        <!--<Button  Style="{StaticResource StBtn}" x:Name="btnRead"  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"  Content="Прочитать" />
+                        <Button  Style="{StaticResource StBtn}"  x:Name="btnStopRead"  Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"  Content="Стоп" />-->
+                    </Grid>
+
+                </StackPanel>
+
+                <StackPanel Grid.Row="2"   Grid.Column="0" Orientation="Horizontal"  >
+                   
+                    <!--<Grid  x:Name="ImportGrd" Grid.Row="2" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"  />
+
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition  x:Name="ValCol" Width="180"/>
+                        </Grid.ColumnDefinitions>
+
+
+                        <TextBlock Margin="4" Grid.Row="2" Grid.Column="1" Text="- первая строка" VerticalAlignment="Center"/>
+
+                        
+                    </Grid>-->
+                </StackPanel>
+
+
+            </Grid>
+
+        </Grid>
+    </Grid>
+</Window>

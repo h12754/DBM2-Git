@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Resources\info1.png" />
+    <None Remove="Resources\info2.png" />
+    <None Remove="Resources\ok1.png" />
+    <None Remove="Resources\ok2.png" />
+    <None Remove="Resources\ok3.png" />
+    <None Remove="Resources\warn1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\_ОБЩИЕ МОДУЛИ\EF_TKP\EF_TKP\EF_TKP.csproj" />
+    <ProjectReference Include="..\..\_ОБЩИЕ МОДУЛИ\ExlOleReader\ExlDBReader\ExlOleReader.csproj" />
+    <ProjectReference Include="..\..\_ОБЩИЕ МОДУЛИ\LightPropertyViewer\LightPropertyViewer\LightPropertyViewer.csproj" />
+    <ProjectReference Include="..\..\_ОБЩИЕ МОДУЛИ\Logger\Logging\Logger.vbproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.13">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.3.261602">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="appsettings.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\info1.png" />
+    <Resource Include="Resources\info2.png" />
+    <Resource Include="Resources\ok1.png" />
+    <Resource Include="Resources\ok2.png" />
+    <Resource Include="Resources\ok3.png" />
+    <Resource Include="Resources\warn1.png" />
+  </ItemGroup>
+</Project>

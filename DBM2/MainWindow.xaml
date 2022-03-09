@@ -1,0 +1,97 @@
+﻿<Window x:Class="DBM2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DBM2"
+        xmlns:PCtrl="clr-namespace:LightPropertyViewer;assembly=LightPropertyViewer"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="510.0" Width="1050.0">
+    <Window.Resources>
+
+      
+    </Window.Resources>
+    <Grid>
+        <TabControl x:Name="products" Background="White">
+            <TabItem x:Name="smartphonesTab" Header="Импорт" Background="White">
+
+                <Grid  >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" ></RowDefinition>
+                        <RowDefinition Height="1*"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <!--<DataGrid Name="ImportDG" Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Width="auto" ItemsSource="{Binding  Path=ImportSourceAsDW}">
+                        
+                        
+                    </DataGrid>-->
+                           
+                    <Grid Name="BaseGrd"  Grid.Row="0" Grid.RowSpan="2" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" ></RowDefinition>
+                            <RowDefinition Height="20"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Row="0"   Grid.Column="0"  >
+                            <Grid  Name="FileOpenGrd" Margin="4" Grid.Row="0" Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" ></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition Height="auto" ></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition Width="{Binding ElementName=ValCol, Path=Width}" ></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                                <Button  Style="{StaticResource StBtn}" Name="btnOpenRawReader" Margin="1" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"  Content="{ Binding FileName, FallbackValue='файл не выбран' }" ContentStringFormat="Открыт: {0}"    Click="OpenRawReader" ></Button>
+                                <TextBlock   x:Name="tbImporter" Margin="4"   Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="2" Background="White"  Text="{Binding CurrImporterName, FallbackValue='Импортер не выбран'}" ></TextBlock>
+                                <TextBlock  Grid.Row="2" Grid.Column="0" Text="Лист" VerticalAlignment="Center"></TextBlock>
+                                <!--<ComboBox  Style="{StaticResource StCbBox}"   x:Name="cbtExlList"  Grid.Row="2"  Grid.Column="1" Background="White"  ItemsSource="{Binding ExlListNames}" ></ComboBox>-->
+                                <Button  Style="{StaticResource StBtn}" Name="btnRead"  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"   Content="Прочитать" ></Button>
+                                <Button  Style="{StaticResource StBtn}"  Name="btnStopRead"  Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"  Content="Стоп" ></Button>
+                        </Grid >
+
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2"   Grid.Column="0"  Style="{StaticResource StColor}" >
+                              <Grid  Name="ImportGrd" Grid.Row="2" Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"  ></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition Height="auto" ></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition  Name="ValCol" Width="180"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            </Grid >
+                            </StackPanel>
+                        <RichTextBox Name="LogBox" MinHeight="150" MinWidth="250" Grid.Row="3"  Grid.Column="0"  Margin="5"  />
+
+                    </Grid>
+
+                </Grid  >
+            </TabItem>
+            <!--<TabItem x:Name="tabletsTab">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Rectangle Height="10" Width="10" Fill="Black" />
+                        <TextBlock Margin="3">Планшеты</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+            </TabItem>-->
+        </TabControl>
+    </Grid>
+</Window>
