@@ -20,7 +20,7 @@ namespace DBM2
 
             if (TargetItemName != null || TargetItemName == ImportVM.Inst.NDItem)
             {
-                return !ImportVM.Inst.UsedAtts.Contains(TargetItemName);
+                return !ImportVM.Inst.lUsedAtts.Contains(TargetItemName);
             }
             else
             {

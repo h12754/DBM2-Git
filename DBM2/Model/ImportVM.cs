@@ -208,7 +208,7 @@ namespace DBM2
                     Msg_img_type = "warn1.png";
                     msg = "Импортер не выбран";
                 }
-                else if (UsedAtts.Count == 0 || ReqAttsUsed == false)
+                else if (lUsedAtts.Count == 0 || ReqAttsUsed == false)
                 {
                     Msg_img_type = "warn1.png";
                     msg = "Не назначены обязательные столбцы для импорта";
@@ -232,9 +232,13 @@ namespace DBM2
         {
             get
             {
-                List<string> bindedAtts = dAttsBind.Values.ToList();
-
-                foreach(string i in ReqAttLst)
+                List<string> bindedAtts = new();
+                if(CurrentImporter!=null)
+                {
+                    bindedAtts = CurrentImporter.dCol_toDescrBind.Values.ToList();
+                }
+            
+                foreach(string i in lReqDescr)
                 {
                     if(!bindedAtts.Contains(i))
                     {
@@ -325,6 +329,8 @@ namespace DBM2
                 _CurrentImporter = value;
                 OnPropertyChanged(nameof(Msg_txt));
                 OnPropertyChanged(nameof(AttCBEnabled));
+                OnPropertyChanged(nameof(lDescr));
+                OnPropertyChanged(nameof(CurrentImporter));
             }
         }
         private BaseImporter _CurrentImporter = null;
@@ -350,9 +356,9 @@ namespace DBM2
                     CurrentImporter = null;
                 }
 
-                GenerateBasicAttLst();
+                //GenerateBasicAttLst();
                 OnPropertyChanged(nameof(CurrentImporter));
-                OnPropertyChanged(nameof(BasicAttLst));
+              
 
             }
         }
@@ -366,48 +372,68 @@ namespace DBM2
         }
 
         // Словарь привязок 
-        public Dictionary<string, string> dAttsBind { get; set; } = new();
-     
-
-        // использованные аттрибуты
-
-        public List<string> UsedAtts
-        {
-            get
-            {
-                List<string> lst = dAttsBind.Values.ToList();
-                lst.RemoveAll(NullContains);
-                return lst;
-
-            }
-        }
-        private static bool NullContains(String s)
-        {
-
-            return s == null | s=="";
-        }
-
-        public List<string> ReqAttLst
+        public Dictionary<string, string> dCol_toDescrBind
         {
             get
             {
                 if(CurrentImporter!=null)
                 {
-                    return CurrentImporter.lReqAtt;
+                    return CurrentImporter.dCol_toDescrBind;
+                }
+                
+                return new Dictionary<string, string>();
+            }
+            set
+            {
+                if (CurrentImporter != null)
+                {
+                     CurrentImporter.dCol_toDescrBind=value;
+                }
+            }
+
+
+        }
+     
+
+        // использованные аттрибуты
+
+        public List<string> lUsedAtts
+        {
+            get
+            {
+                if(CurrentImporter!=null)
+                {
+                    return CurrentImporter.lUsedAtts;
                 }
                 return new List<string>();
             }
         }
-        private List<string> _ReqAttLst = new();
-
-        public List<string> BasicAttLst
+ 
+        public List<string> lReqDescr
         {
             get
             {
-               return _BasicAttLst;
+                if(CurrentImporter!=null)
+                {
+                    return CurrentImporter.lReqDescr;
+                }
+                return new List<string>();
             }
         }
-        private List<string> _BasicAttLst=new();
+
+
+        public List<string> lDescr
+        {
+            get
+            {
+                if (CurrentImporter != null)
+                {
+                    return CurrentImporter.lDescr;
+                }
+                return new List<string>();
+            }
+        }
+
 
         public string SelectedVendor
         {
@@ -498,11 +524,11 @@ namespace DBM2
                 Reader.GetTableByName(_name);
                 ImportSource = Reader.ReadedTable;
                     // Заново делаем словарь соответствия 
-                dAttsBind = new();
+                    dCol_toDescrBind = new();
 
                 foreach(DataColumn dc in ImportSource.Columns)
                     {
-                        dAttsBind.Add(dc.ColumnName, null);
+                        dCol_toDescrBind.Add(dc.ColumnName, null);
                     }
                 WaitDialogMdl.CnvVis = Visibility.Hidden;
                    // SyncNumColumns();
@@ -549,7 +575,7 @@ namespace DBM2
         //        }
                                
         //        BasicAttLst.Add(NDItem);
-        //        BasicAttLst.Sort();
+         //      BasicAttLst.Sort();
         //    }
            
         //}
@@ -625,8 +651,8 @@ namespace DBM2
                         if(d5!=null && cb.SelectedItem != null)
                         {
                             Dictionary<string, string> dA = new();
-                           dAttsBind[ d5.Header.ToString()] = str;
-                           OnPropertyChanged(nameof(BasicAttLst));
+                            dCol_toDescrBind[ d5.Header.ToString()] = str;
+                           OnPropertyChanged(nameof(lDescr));
                             OnPropertyChanged(nameof(Msg_txt));
                          //   cb.SelectedItem = str;
 

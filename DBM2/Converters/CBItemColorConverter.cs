@@ -19,7 +19,7 @@ namespace DBM2
             string TargetItemName = values[0] as string;
 
 
-            if (ImportVM.Inst.ReqAttLst.Contains(TargetItemName))
+            if (ImportVM.Inst.lReqDescr.Contains(TargetItemName))
             {
                 return Brushes.DarkOrange;
             }

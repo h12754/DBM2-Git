@@ -13,7 +13,7 @@ namespace DBM2.Importers
     {
         public BaseImporter()
         {
-            create_lists();
+       //     create_lists();
         }
 
         // Человеческое имя
@@ -38,6 +38,7 @@ namespace DBM2.Importers
         {
             get
             {
+                // динамически добавляем присвоенные столбцы
                 if(dCol_toDescrBind.Count>0)
                 {
                     foreach(KeyValuePair<string, string> i in dCol_toDescrBind)
@@ -72,7 +73,24 @@ namespace DBM2.Importers
         }
         private Dictionary<string, string> _dDescrAtt; // = new Dictionary<string, string>();
         // лист с названиями атрибутов для биндинга. Заполняется void'ом
-        public List<string> lDescr=new();
+        // Зря я так. Он пустой на момент вызова. Дописан get.
+        public List<string> lDescr
+        {
+            get
+            {
+                if (_lDescr == null)
+                {
+                    _lDescr = new();
+                    _lDescr.AddRange(dDescrAtt.Keys.ToList());
+                    _lDescr.Add(NDItem);
+                    _lDescr.Sort();
+                }
+                return _lDescr;
+            }
+         }
+
+        public List<string> _lDescr;
+
         // лист с названиями обязательных атрибутов для биндинга
         public List<string> lReqDescr
         {
@@ -83,7 +101,7 @@ namespace DBM2.Importers
                  _lReqDescr.Clear();
                  foreach (string i in lReqAtt)
                    {
-                    _lReqDescr.Add(dDescrAtt[i]); // На момент запроса словарь уже есть. Ну или тут и заполнится.
+                    _lReqDescr.Add(EFConn.GetAttsDescr(i)); 
                    }
                 }
                 return _lReqDescr;
@@ -91,7 +109,7 @@ namespace DBM2.Importers
         }
         private List<string> _lReqDescr = new();
         // лист обязательных аттрибутов
-        public virtual List<string> lReqAtt
+        public  List<string> lReqAtt
         {
             get
             {
@@ -102,7 +120,11 @@ namespace DBM2.Importers
 
         // Словарь привязок столбцов к названиям
         public Dictionary<string, string> dCol_toDescrBind { get; set; } = new();
-       
+
+
+
+
+
         // привязанные наименования аттрибутов
 
         public List<string> lUsedAtts
@@ -151,17 +173,12 @@ namespace DBM2.Importers
         // аттрибут производителя
         public string VendorAtt = "Supplier";
 
-        public void create_lists()
-        {
-            lDescr.AddRange(dDescrAtt.Keys.ToList());
-            lDescr.Add(NDItem);
-            lDescr.Sort();
-
-
-
-            }
-
-        }
+        //public void create_lists()
+        //{
+        //    lDescr.AddRange(dDescrAtt.Keys.ToList());
+        //    lDescr.Add(NDItem);
+        //    lDescr.Sort();
+        //}
 
 
 
